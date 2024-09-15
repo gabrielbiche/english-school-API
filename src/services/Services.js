@@ -5,23 +5,27 @@ class Services {
     this.model = model
   }
 
-  async getAll(where = {}) {
-    return database[this.model].findAll({ where: { ...where } })
+  async getAll() {
+    return database[this.model].findAll()
   }
 
-  async getOne(where = {}) {
-    return database[this.model].findOne({ where: { ...where } })
+  async getOne(id) {
+    return database[this.model].findOne({ where: { id: id } })
   }
 
   async create(data) {
     return database[this.model].create(data)
   }
 
-  async update(data, where, transaction = {}) {
+  async update(data, id) {
+    return database[this.model].update(data, { where: { id: id } })
+  }
+
+  async updateWithTransaction(data, where, transaction) {
     return database[this.model].update(
       data,
       { where: { ...where } },
-      (transaction = {})
+      transaction
     )
   }
 
@@ -31,13 +35,6 @@ class Services {
 
   async restore(id) {
     return database[this.model].restore({ where: { id: id } })
-  }
-
-  async findAndCount(where, aggregators) {
-    return database[this.model].findAndCountAll(
-      { where: { ...where } },
-      aggregators
-    )
   }
 }
 
